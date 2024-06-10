@@ -6,8 +6,14 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useRef } from "react";
 
+declare global {
+  interface Window {
+    ai: any;
+  }
+}
+
 const checkAI = async () => {
-  if (window.ai) {
+  if ("ai" in window) {
     if ((await window.ai.canCreateTextSession()) === "readily") {
       return true;
     }
@@ -137,7 +143,9 @@ export default function ChatBox() {
             name='text'
             value={inputValue}
             onInput={(e) => {
-              setInputValue(e.target.value);
+              if ("value" in e.target) {
+                setInputValue(e.target.value as string);
+              }
             }}
             disabled={!isAI}
           />
