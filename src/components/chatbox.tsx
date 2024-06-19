@@ -62,9 +62,9 @@ export default function ChatBox() {
             </p>
           ) : (
             <p>
-              Built-in AI not work. Follow{" "}
+              Built-in AI not work. Please check{" "}
               <a
-                href='https://x.com/lightning_joyce/status/1800138565411799099'
+                href='https://github.com/lightning-joyce/chromeai?tab=readme-ov-file#how-to-set-up-built-in-gemini-nano-in-chrome'
                 className='font-medium text-primary underline underline-offset-4'
               >
                 this steps
