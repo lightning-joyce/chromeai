@@ -165,6 +165,17 @@ export default function ChatBox() {
               Lightning Joyce
             </a>
           </p>
+          <p className='text-center'>
+            Open source on{" "}
+            <a
+              href='https://github.com/lightning-joyce/chromeai'
+              target='_blank'
+              className='font-medium text-primary underline underline-offset-4'
+            >
+              GitHub
+            </a>
+            .
+          </p>
         </div>
       </div>
     </>
