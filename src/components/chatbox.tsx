@@ -107,12 +107,13 @@ export default function ChatBox() {
         <form
           className='flex w-full items-center space-x-2'
           onSubmit={async (form) => {
-            setInferring(true);
             form.preventDefault();
 
             if (inputValue === "") {
               return;
             }
+            setInferring(true);
+
             rawChatHistory.current.push({
               id: rawChatHistory.current.length + 1,
               role: "user",
