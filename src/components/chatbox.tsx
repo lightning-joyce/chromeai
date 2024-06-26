@@ -26,9 +26,11 @@ export default function ChatBox() {
   const [endMessage, setEndMessage] = useState<null | HTMLDivElement>(null);
   const [model, setModel] = useState({
     prompt: async (inputValue?: string) => {},
+    execute: async (inputValue?: string) => {},
   });
   const [isAI, setIsAI] = useState<null | boolean>(null);
   const [inputValue, setInputValue] = useState("");
+  const [inferring, setInferring] = useState(false);
   const [chatHistory, setChatHistory] = useState(rawChatHistory.current);
 
   const updateIsAI = async () => {
@@ -105,7 +107,9 @@ export default function ChatBox() {
         <form
           className='flex w-full items-center space-x-2'
           onSubmit={async (form) => {
+            setInferring(true);
             form.preventDefault();
+
             if (inputValue === "") {
               return;
             }
@@ -115,11 +119,17 @@ export default function ChatBox() {
               text: inputValue,
             });
             setChatHistory(rawChatHistory.current);
+            setInputValue("");
 
             const prompt = `${rawChatHistory.current.map((chat) => {
               return `${chat.role}: ${chat.text}\n`;
             })}\nassistant:`;
-            const aiReplay = await model.prompt(prompt);
+            let aiReplay = (await model.execute(prompt)) as unknown as string;
+            console.log(aiReplay, typeof aiReplay);
+
+            if (!aiReplay || aiReplay.length == 0) {
+              aiReplay = "[Nothing]";
+            }
 
             rawChatHistory.current.push({
               id: rawChatHistory.current.length + 1,
@@ -127,7 +137,8 @@ export default function ChatBox() {
               text: aiReplay,
             });
             setChatHistory(rawChatHistory.current);
-            setInputValue("");
+
+            setInferring(false);
           }}
           onReset={() => {
             rawChatHistory.current = [];
@@ -135,7 +146,7 @@ export default function ChatBox() {
             setInputValue("");
           }}
         >
-          <Button type='reset' disabled={!isAI}>
+          <Button type='reset' disabled={!isAI || inferring}>
             New Chat
           </Button>
           <Input
@@ -149,7 +160,7 @@ export default function ChatBox() {
             }}
             disabled={!isAI}
           />
-          <Button type='submit' disabled={!isAI}>
+          <Button type='submit' disabled={!isAI || inferring}>
             Send
           </Button>
         </form>
