@@ -1,10 +1,34 @@
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 import { Badge } from "@/components/ui/badge";
 import ChatBox from "@/components/chatbox";
+import { Globe } from "lucide-react";
+import { headers } from "next/headers";
 
 export default function Home() {
+  const headersList = headers();
+  const host = headersList.get("host");
+
   return (
     <div className='mx-auto flex min-h-screen w-full max-w-3xl flex-col space-y-6 p-4 md:p-8'>
-      <header className=''></header>
+      <header className=''>
+        {host === "chromeai.pages.dev" && (
+          <Alert>
+            <Globe className='h-4 w-4' />
+            <AlertTitle>New Domain</AlertTitle>
+            <AlertDescription>
+              Our new domain is{" "}
+              <a
+                href='https://chromeai.co'
+                className='font-medium text-primary underline underline-offset-4'
+              >
+                chromeai.co
+              </a>
+              .
+            </AlertDescription>
+          </Alert>
+        )}
+      </header>
       <main className='flex h-full w-full flex-1 flex-col'>
         <div className='mx-auto h-full flex-1 px-4 py-4 border-border w-full rounded-lg border backdrop-blur-[2px] md:p-6'>
           <div className='mx-auto flex w-full flex-col gap-8'>
