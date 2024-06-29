@@ -9,7 +9,7 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chrome Built-in AI",
+  title: "Chrome AI - Built-in Gemini Nano",
   description:
     "Run Chrome built-in large language model AI locally in your browser.",
   keywords: [
@@ -48,3 +48,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const runtime = "edge";
