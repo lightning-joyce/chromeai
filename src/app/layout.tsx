@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import Background from "@/components/background";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import Script from "next/script";
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Background>{children}</Background>
 
+        <GoogleTagManager gtmId='G-59R59B3LY9' />
         <Script
           id='ms_clarity'
           dangerouslySetInnerHTML={{
