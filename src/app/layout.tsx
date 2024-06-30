@@ -35,6 +35,15 @@ export default function RootLayout({
 
         <GoogleTagManager gtmId='G-59R59B3LY9' />
         <Script
+          id='gtag'
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-59R59B3LY9');`,
+          }}
+        />
+        <Script
           id='ms_clarity'
           dangerouslySetInnerHTML={{
             __html: `(function(c,l,a,r,i,t,y){
