@@ -1,5 +1,13 @@
 # Chrome AI
 
+[![Stargazers][stars-shield]][stars-url]
+[![Follow Twitter][twitter-image]][twitter-url]
+
+[stars-shield]: https://img.shields.io/github/stars/lightning-joyce/chromeai.svg?style=for-the-badge
+[stars-url]: https://github.com/lightning-joyce/chromeai/stargazers
+[twitter-image]: https://img.shields.io/twitter/follow/lightning_joyce?style=for-the-badge&logo=x
+[twitter-url]: https://twitter.com/lightning_joyce
+
 ## Overview
 
 Chrome AI is a demo project that runs large language models locally within the browser. It showcases the capabilities of modern web technologies to leverage advanced AI functionalities directly in the browser environment without needing server-side processing.
