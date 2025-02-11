@@ -6,15 +6,36 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useRef } from "react";
 
+type AIModelAvailability = 'readily' | 'after-download' | 'no';
+
 declare global {
   interface Window {
-    ai: any;
+    ai: AI;
+  }
+
+  interface AI {
+    languageModel: {
+      create(): Promise<AITextSession>;
+      capabilities(): Promise<{
+        available: AIModelAvailability;
+        defaultTemperature?: number;
+        defaultTopK?: number;
+        maxTemperature?: number;
+        maxTopK?: number;
+      }>;
+    };
+  }
+
+  interface AITextSession {
+    prompt(input: string): Promise<string>;
+    promptStreaming(input: string): AsyncGenerator<string>;
   }
 }
 
 const checkAI = async () => {
   if ("ai" in window) {
-    if ((await window.ai.canCreateTextSession()) === "readily") {
+    const available = (await window.ai.languageModel.capabilities()).available
+    if (available === 'readily') {
       return true;
     }
   }
@@ -24,10 +45,7 @@ const checkAI = async () => {
 export default function ChatBox() {
   const rawChatHistory = useRef<any[]>([]);
   const [endMessage, setEndMessage] = useState<null | HTMLDivElement>(null);
-  const [model, setModel] = useState({
-    prompt: async (inputValue?: string) => {},
-    execute: async (inputValue?: string) => {},
-  });
+  const [session, setSession] = useState<null | AITextSession>(null);
   const [isAI, setIsAI] = useState<null | boolean>(null);
   const [inputValue, setInputValue] = useState("");
   const [inferring, setInferring] = useState(false);
@@ -37,8 +55,10 @@ export default function ChatBox() {
     const checkAIStatus = await checkAI();
 
     if (checkAIStatus) {
-      const thisModel = await window.ai.createTextSession();
-      setModel(thisModel);
+      // Could add `temperature` and `topK` parameters here to the `create` function.
+      // defaultTemperature is 1, defaultTopK is 3
+      const thisSession = await window.ai.languageModel.create();
+      setSession(thisSession);
     }
 
     setIsAI(checkAIStatus);
@@ -125,7 +145,7 @@ export default function ChatBox() {
             const prompt = `${rawChatHistory.current.map((chat) => {
               return `${chat.role}: ${chat.text}\n`;
             })}\nassistant:`;
-            let aiReplay = (await model.execute(prompt)) as unknown as string;
+            let aiReplay = await session!.prompt(prompt);
             console.log(aiReplay, typeof aiReplay);
 
             if (!aiReplay || aiReplay.length == 0) {
