@@ -21,7 +21,8 @@
       "@/*": ["./src/*"]
     },
     "types": [
-        "@cloudflare/workers-types/2023-07-01"
+        "@cloudflare/workers-types/2023-07-01",
+        "@types/dom-chromium-ai"
     ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -6,32 +6,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useRef } from "react";
 
-type AIModelAvailability = 'readily' | 'after-download' | 'no';
-
-declare global {
-  interface Window {
-    ai: AI;
-  }
-
-  interface AI {
-    languageModel: {
-      create(): Promise<AITextSession>;
-      capabilities(): Promise<{
-        available: AIModelAvailability;
-        defaultTemperature?: number;
-        defaultTopK?: number;
-        maxTemperature?: number;
-        maxTopK?: number;
-      }>;
-    };
-  }
-
-  interface AITextSession {
-    prompt(input: string): Promise<string>;
-    promptStreaming(input: string): AsyncGenerator<string>;
-  }
-}
-
 const checkAI = async () => {
   if ("ai" in window) {
     const available = (await window.ai.languageModel.capabilities()).available
@@ -45,7 +19,7 @@ const checkAI = async () => {
 export default function ChatBox() {
   const rawChatHistory = useRef<any[]>([]);
   const [endMessage, setEndMessage] = useState<null | HTMLDivElement>(null);
-  const [session, setSession] = useState<null | AITextSession>(null);
+  const [session, setSession] = useState<null | AILanguageModel>(null);
   const [isAI, setIsAI] = useState<null | boolean>(null);
   const [inputValue, setInputValue] = useState("");
   const [inferring, setInferring] = useState(false);
